@@ -17,19 +17,21 @@ screen = pygame.display.set_mode((WW, WH))
 pygame.display.set_caption('Phisiks!')
 clock = pygame.time.Clock()
 
-# Creating Objects
-balls = []
-for i in range(num_of_balls):
-    x, y = random.randint(50, WW-50), random.randint(50, WH-50)
-    b = DynamicBall(x, y, -100, 100, 10, space)
-    balls.append(b)
+# Player
+px, py = WW//2, WH//2
+player = DynamicBall(px, py, -100, 100, 10, space)
 
 # boxy = StaticBox(100, WH-100, WW, 25, 0, space)
-liney1 = StaticLine((0, WH), (WW, WH), 10, space)     # Bottom
-liney2 = StaticLine((0, 0), (WW, 0), 10, space)           # Top
-liney3 = StaticLine((0, 0), (0, WH), 10, space)           # Left
-liney4 = StaticLine((WW, 0), (WW, WH), 10, space)     # Right
-liney5 = StaticLine((0, 400), (400, 400), 10, space)     # Right
+lines = []
+start_pos = [
+    (0, WH), (0, 0), (0, 0), (WW, 0), (0, 400)
+]
+end_pos = [
+    (WW, WH), (WW, 0), (0, WH), (WW, WH), (400, 400)
+]
+for s, e in zip(start_pos, end_pos):            # can't use nested cuz it makes wierd things happen xD
+    l = StaticLine(s, e, 10, space)
+    lines.append(l)
 
 running = True
 # Main Loop
@@ -38,19 +40,11 @@ while running:
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             running = False
+    
+    player.draw(screen, (255, 255, 0))
 
-    # Drawing starts now ;)
-    for ball in balls:
-        ball.draw(screen, (255, 255, 0))
-
-    for line in StaticLine.all_lines:
+    for line in lines:
         line.draw(screen, (0, 255, 255))
-    # liney1.draw(screen, (0, 255, 255))
-    # liney2.draw(screen, (0, 255, 255))
-    # liney3.draw(screen, (0, 255, 255))
-    # liney4.draw(screen, (0, 255, 255))
-    # liney5.draw(screen, (0, 255, 255))
-    # boxy.draw(screen, (255, 255, 0))
 
     # Updating
     space.step(2/FPS)          # idk why is the value is 1/FPS

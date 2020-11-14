@@ -61,3 +61,13 @@ class StaticLine:
 
     def draw(self, surf, color):
         pygame.draw.line(surf, color, self.shape.a, self.shape.b, int(self.shape.radius) * 2)
+
+# Victory Flag
+class VictoryFlag:
+    def __init__(self, x, y):           # U have to put bottom point of the flag while making an instance
+        self.image = pygame.image.load('victory_flag.png')
+        self.rect = self.image.get_rect()
+        self.rect.bottom = (x, y)
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect.topleft)
