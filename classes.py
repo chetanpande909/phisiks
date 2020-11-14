@@ -3,15 +3,15 @@ import pymunk, pygame
 
 # Dynamic means it will move 
 class DynamicBall:
-    def __init__(self, x, y, vx, vy, r, space):
+    def __init__(self, pos, vx, vy, r, space):
         ## Body
         self.body = pymunk.Body(body_type=pymunk.Body.DYNAMIC)## name suggests everything -_-
-        self.body.position = x, y                   ## name suggests everything -_-
+        self.body.position = pos[0]                  ## name suggests everything -_-
         self.body.velocity = vx, vy                 ## name suggests everything -_-
         ## Shape
         self.shape = pymunk.Circle(self.body, r)    ## this is the collision shape
         self.shape.density = 1                      ## if set to 0, body will behave wierdly
-        self.shape.elasticity = 1                   ## name suggests everything -_-
+        self.shape.elasticity = 0.50                ## name suggests everything -_-
         ## Adding to the space
         space.add(self.body, self.shape)
         self.shape.collision_type = 1               ## idk wht this does, but if i comment it, the ball doesn't move
@@ -64,10 +64,10 @@ class StaticLine:
 
 # Victory Flag
 class VictoryFlag:
-    def __init__(self, x, y):           # U have to put bottom point of the flag while making an instance
+    def __init__(self, pos):           # U have to put bottom point of the flag while making an instance
         self.image = pygame.image.load('victory_flag.png')
         self.rect = self.image.get_rect()
-        self.rect.bottomleft = (x, y)
+        self.rect.bottomleft = tuple(pos)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect.topleft)
