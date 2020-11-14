@@ -46,6 +46,7 @@ class StaticBox:
 # Box is slow so just draw a line with the width ;)
 # looks the same tho
 class StaticLine:
+    all_lines = []
     def __init__(self, start_point, end_point, w, space):
         ## Body
         self.body = pymunk.Body(body_type=pymunk.Body.STATIC)## name suggests everything -_-
@@ -56,6 +57,7 @@ class StaticLine:
         ## Adding to the space
         space.add(self.body, self.shape)
         self.shape.collision_type = 1               ## idk wht this does
-        
+        StaticLine.all_lines.append(self)
+
     def draw(self, surf, color):
         pygame.draw.line(surf, color, self.shape.a, self.shape.b, int(self.shape.radius) * 2)

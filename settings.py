@@ -5,7 +5,7 @@ import pygame, pymunk
 GRAVITY = 100
 
 ################# Pygame initialization #################
-WW, WH = 500, 500
+WW, WH = 1000, 800
 FPS = 60
 
 #################   General Settings    #################
