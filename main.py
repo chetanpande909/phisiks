@@ -48,7 +48,7 @@ def change_level(level):
         l = StaticLine(s, e, 10, space)
         lines.append(l)
     
-    # flag = VictoryFlag(current_level[2])
+    flag = VictoryFlag(current_level[2])
     player = DynamicBall(current_level[3], 0, 0, 10, space)
     moves = 5
 
