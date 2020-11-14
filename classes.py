@@ -67,7 +67,7 @@ class VictoryFlag:
     def __init__(self, x, y):           # U have to put bottom point of the flag while making an instance
         self.image = pygame.image.load('victory_flag.png')
         self.rect = self.image.get_rect()
-        self.rect.bottom = (x, y)
+        self.rect.bottomleft = (x, y)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect.topleft)
