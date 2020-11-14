@@ -15,10 +15,18 @@ class DynamicBall:
         ## Adding to the space
         space.add(self.body, self.shape)
         self.shape.collision_type = 1               ## idk wht this does, but if i comment it, the ball doesn't move
+        ## This will b used for collsions for pygame
+        self.rect = pygame.Rect(
+            self.body.position.x, 
+            self.body.position.y, 
+            self.shape.radius, 
+            self.shape.radius
+        )
 
     def draw(self, surf, color):
         ## Pygame comes into action ;)
         x, y = self.body.position
+        self.rect.topleft = (x, y)      ## To update the rect's position
         pygame.draw.circle(surf, color, (int(x), int(y)), int(self.shape.radius))
         '''
         x, y and radius are floats and thus need to b changed to integer,

@@ -37,6 +37,21 @@ moves = 5
 # Victory Flag
 flag = VictoryFlag(current_level[2])
 
+# Some functions
+def change_level(level):
+    global current_level, lines, flag, player, moves
+    current_level = level
+    for rl in lines:
+        space.remove(rl.body, rl.shape)            # Extremely Necessary 
+    lines = []                      # Deleting the lines of the prev level
+    for s, e in zip(current_level[0], current_level[1]):        # Copy paste from above ;)
+        l = StaticLine(s, e, 10, space)
+        lines.append(l)
+    
+    # flag = VictoryFlag(current_level[2])
+    player = DynamicBall(current_level[3], 0, 0, 10, space)
+    moves = 5
+
 running = True
 clicked = False
 # Main Loop
@@ -81,9 +96,14 @@ while running:
     moves_rect.center = (WW//2, 50)
     screen.blit(moves_text, moves_rect.topleft)
 
+    # Checking collision b/w player and the victory flag
+    if player.rect.colliderect(flag.rect):
+        print('You win!')
+        change_level(level2)
+
     # Updating
-    space.step(2/FPS)          # idk why is the value is 2/FPS
+    space.step(1/FPS)          # idk why is the value is 2/FPS
     pygame.display.update()
-    clock.tick(FPS)
+    clock.tick(FPS*2)
 
 pygame.quit()
