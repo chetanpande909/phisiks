@@ -3,7 +3,7 @@ PHISIKS OP!
 '''
 
 # Imports
-import pymunk, pygame, random, math
+import pymunk, pygame, random, math, time
 from classes import *
 from levels import *
 from settings import *
@@ -20,7 +20,7 @@ pygame.display.set_caption('Phisiks!')
 clock = pygame.time.Clock()
 
 # Handling Levels
-current_level = level3
+current_level = level1
 
 # Player
 max_speed = 100
@@ -42,16 +42,17 @@ flag = VictoryFlag(current_level[2])
 # Some functions
 def next_level(curr_level):
     global current_level, lines, flag, player, moves
-    
+
     try:
-        current_level = levels[ levels.index(curr_level) + 1 ]        ## increasing the level by 1
-    except IndexError:                                                ## if list is out of levels
-        current_level = levels[0]                                     ## this can b changed in the future to make a victory page that u have completed all levels !
-    
+        current_level = levels[levels.index(curr_level) + 1]  ## increasing the level by 1
+    except IndexError:  ## if list is out of levels
+        current_level = levels[
+            0]  ## this can b changed in the future to make a victory page that u have completed all levels !
+
     for rl in lines:
         space.remove(rl.body, rl.shape)  # Extremely Necessary
     lines = []  # Deleting the lines of the prev level
-    
+
     for s, e in zip(current_level[0], current_level[1]):  # Copy paste from above ;)
         l = StaticLine(s, e, 10, space)
         lines.append(l)
@@ -61,12 +62,17 @@ def next_level(curr_level):
     moves = 5
 
 
-running = True
 clicked = False
 
-if welcome(screen)=='quit':
-    running=False
+running = welcome_screen(screen)
+
+# noting Score
+score = 0
+st_time = 0  # Time
+
 while running:
+    if st_time == 0:
+        st_time = time.time()
     screen.fill(BGCOLOR)
     # Events
     for e in pygame.event.get():
@@ -103,7 +109,11 @@ while running:
         disty = max_speed
 
     # Displaying the number of moves left
-    moves_text = small_font.render('Moves Left: ' + str(moves), True, PINK)
+    moves_left_text = 'Moves Left: ' + str(moves)
+    if moves == 0:
+        moves_left_text += " Press R to reset"  # just adding some text
+
+    moves_text = small_font.render(moves_left_text, True, PINK)
     moves_rect = moves_text.get_rect()
     moves_rect.center = (WW // 2, 50)
     screen.blit(moves_text, moves_rect.topleft)
@@ -111,6 +121,16 @@ while running:
     # Checking collision b/w player and the victory flag
     if player.rect.colliderect(flag.rect):
         print('You win!')
+
+        # Adding to Score and reset score Variables
+        score += int(float(100 * moves) / float(time.time() - st_time))
+        st_time = 0
+
+        # Show score
+        # It will return False if Quit
+        # it will return True if any key is pressed
+        running = score_screen(screen, score)
+
         next_level(current_level)
 
     # Updating

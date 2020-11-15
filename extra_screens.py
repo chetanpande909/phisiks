@@ -1,8 +1,9 @@
 import pygame, time
-from settings import small_font, big_font, WW, WH
+from settings import small_font, medium_font, big_font, WW, WH
 import leaderboard as lb
 
-def welcome(screen):
+
+def welcome_screen(screen):
     while True:
         screen.fill((255, 255, 255))
         heading_text = big_font.render('Welcome to the Physics Game!', True, (255, 0, 255))
@@ -22,19 +23,20 @@ def welcome(screen):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return 'quit'
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_l:
                     temp_data = leaderboard_screen(screen)
                     if temp_data == 'quit':
-                        return 'quit'
+                        return False
                     break
-                return 'start'
+                return True
 
         pygame.display.update()
 
+
 def leaderboard_screen(screen):
-    screen.fill((255,255,255))
+    screen.fill((255, 255, 255))
 
     heading_text = big_font.render('Physics Game Leaderboard', True, (255, 0, 255))
     heading_rect = heading_text.get_rect()
@@ -68,3 +70,32 @@ def leaderboard_screen(screen):
                 return 'quit'
             elif event.type == pygame.KEYDOWN:
                 return 'start'
+
+
+# noinspection DuplicatedCode
+# pycharm setting msg above -_-
+def score_screen(screen, score):
+    while True:
+        screen.fill((255, 255, 255))
+        heading_text = big_font.render('You passed the Level!', True, (255, 0, 255))
+        heading_rect = heading_text.get_rect()
+        heading_rect.center = (WW // 2, 50)
+        screen.blit(heading_text, heading_rect.topleft)
+
+        heading_text = medium_font.render(f'Your Score {score}', True, (255, 0, 255))
+        heading_rect = heading_text.get_rect()
+        heading_rect.center = (WW // 2, 350)
+        screen.blit(heading_text, heading_rect.topleft)
+
+        heading_text = small_font.render('Press a key to continue!', True, (255, 0, 255))
+        heading_rect = heading_text.get_rect()
+        heading_rect.center = (WW // 2, 450)
+        screen.blit(heading_text, heading_rect.topleft)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                return True
+
+        pygame.display.update()
