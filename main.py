@@ -20,7 +20,7 @@ pygame.display.set_caption('Phisiks!')
 clock = pygame.time.Clock()
 
 # Handling Levels
-current_level = level1
+current_level = level3
 
 # Player
 max_speed = 100
