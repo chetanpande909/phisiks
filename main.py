@@ -61,7 +61,7 @@ def next_level(curr_level):
     moves = 5
 
 def reset_level():
-    next_level(levels[levels.index(current_level)-1])       # LOGIC OP xD
+    next_level(levels[-1])
 
 clicked = False
 
