@@ -20,7 +20,7 @@ pygame.display.set_caption('Phisiks!')
 clock = pygame.time.Clock()
 
 # Handling Levels
-current_level = level1
+current_level = level4
 
 # Player
 max_speed = 100
@@ -46,8 +46,7 @@ def next_level(curr_level):
     try:
         current_level = levels[levels.index(curr_level) + 1]  ## increasing the level by 1
     except IndexError:  ## if list is out of levels
-        current_level = levels[
-            0]  ## this can b changed in the future to make a victory page that u have completed all levels !
+        current_level = levels[0]  ## this can b changed in the future to make a victory page that u have completed all levels !
 
     for rl in lines:
         space.remove(rl.body, rl.shape)  # Extremely Necessary
@@ -61,6 +60,8 @@ def next_level(curr_level):
     player = DynamicBall(current_level[3], 0, 0, 10, space)
     moves = 5
 
+def reset_level():
+    next_level(levels[levels.index(current_level)-1])       # LOGIC OP xD
 
 clicked = False
 
@@ -82,7 +83,7 @@ while running:
             clicked = True
         if e.type == pygame.KEYDOWN:
             if moves == 0 and e.key == pygame.K_r:
-                next_level(levels[levels.index(current_level)-1])       # LOGIC OP xD
+                reset_level()
 
     # Drawing the direction in which a force will b applied
     # it's just for a reference, but it looks cool so ;)
@@ -123,7 +124,6 @@ while running:
 
     # Checking collision b/w player and the victory flag
     if player.rect.colliderect(flag.rect):
-        print('You win!')
 
         # Adding to Score and reset score Variables
         score += int(float(100 * moves) / float(time.time() - st_time))
@@ -135,6 +135,12 @@ while running:
         running = score_screen(screen, score)
 
         next_level(current_level)
+
+    # Falling off the screen.... all games hav it so why not ;)
+    if player.body.position.x < 0 or player.body.position.y > WW:
+        reset_level()
+    if player.body.position.y < 0 or player.body.position.y > WH:
+        reset_level()
 
     # Updating
     space.step(1 / FPS)  # idk why is the value is 2/FPS

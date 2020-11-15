@@ -58,7 +58,21 @@ level3 = [
     ]
 ]
 
+level4 = [
+    [
+        (0, 0), (0, 0), (WW, 0)
+    ], 
+    [
+        (WW, 0), (0, WH), (WW, WH)
+    ], 
+    [
+        (WW-100, 100)
+    ], 
+    [
+        (WW-100, WH-100)
+    ]
+]
 ## Keep this in the bottom and update it after adding a level
 levels = [
-    level1, level2, level3
+    level1, level2, level3, level4
 ]

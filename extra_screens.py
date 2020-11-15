@@ -31,6 +31,8 @@ def welcome_screen(screen):
                         return False
                     break
                 return True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                return True
 
         pygame.display.update()
 
@@ -96,6 +98,8 @@ def score_screen(screen, score):
             if event.type == pygame.QUIT:
                 return False
             elif event.type == pygame.KEYDOWN:
+                return True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 return True
 
         pygame.display.update()
