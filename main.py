@@ -64,8 +64,8 @@ def next_level(curr_level):
 running = True
 clicked = False
 
-# Main Loop
-welcome(screen)             ## The WELCOME Screen
+if welcome(screen)=='quit':
+    running=False
 while running:
     screen.fill(BGCOLOR)
     # Events
