@@ -23,8 +23,9 @@ clock = pygame.time.Clock()
 current_level = level1
 
 # Player
+p_radius = 16
 max_speed = 100
-player = DynamicBall(current_level[3], 0, 0, 10, space)
+player = DynamicBall(current_level[3], 0, 0, p_radius, space)
 
 # boxy = StaticBox(100, WH-100, WW, 25, 0, space)
 lines = []
@@ -48,6 +49,9 @@ def next_level(curr_level):
     except IndexError:  ## if list is out of levels
         current_level = levels[0]  ## this can b changed in the future to make a victory page that u have completed all levels !
 
+    flag = VictoryFlag(current_level[2])
+    player = DynamicBall(current_level[3], 0, 0, p_radius, space)
+
     for rl in lines:
         space.remove(rl.body, rl.shape)  # Extremely Necessary
     lines = []  # Deleting the lines of the prev level
@@ -56,12 +60,12 @@ def next_level(curr_level):
         l = StaticLine(s, e, 10, space)
         lines.append(l)
 
-    flag = VictoryFlag(current_level[2])
-    player = DynamicBall(current_level[3], 0, 0, 10, space)
     moves = 5
 
 def reset_level():
+    global score
     next_level(levels[-1])
+    score = 0
 
 clicked = False
 
