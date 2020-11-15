@@ -40,12 +40,18 @@ flag = VictoryFlag(current_level[2])
 
 
 # Some functions
-def change_level(level):
+def next_level(curr_level):
     global current_level, lines, flag, player, moves
-    current_level = level
+    
+    try:
+        current_level = levels[ levels.index(curr_level) + 1 ]        ## increasing the level by 1
+    except IndexError:                                                ## if list is out of levels
+        current_level = levels[0]                                     ## this can b changed in the future to make a victory page that u have completed all levels !
+    
     for rl in lines:
         space.remove(rl.body, rl.shape)  # Extremely Necessary
     lines = []  # Deleting the lines of the prev level
+    
     for s, e in zip(current_level[0], current_level[1]):  # Copy paste from above ;)
         l = StaticLine(s, e, 10, space)
         lines.append(l)
@@ -57,12 +63,12 @@ def change_level(level):
 
 running = True
 clicked = False
-# Main Loop
 
 if welcome(screen)=='quit':
     running=False
 while running:
-    screen.fill((255, 255, 255))
+    screen.fill(BGCOLOR)
+    # Events
     for e in pygame.event.get():
         if e.type == pygame.QUIT:
             running = False
@@ -74,14 +80,14 @@ while running:
     mx, my = pygame.mouse.get_pos()
     distx = mx - player.body.position.x
     disty = my - player.body.position.y
-    pygame.draw.aaline(screen, (255, 100, 10), player.body.position, (mx, my), 10)
+    pygame.draw.aaline(screen, GREEN, player.body.position, (mx, my), 10)
 
-    player.draw(screen, (255, 100, 10))  # Drawing the player
+    player.draw(screen, GREEN)  # Drawing the player
     flag.draw(screen)  # Drawing the victory flag
 
     # Drawing the walls/lines whatever u call it -_-
     for line in lines:
-        line.draw(screen, (0, 255, 255))
+        line.draw(screen, L_BLUE)
 
     # Adding a velocity to the ball if it clicked
     if clicked:
@@ -97,7 +103,7 @@ while running:
         disty = max_speed
 
     # Displaying the number of moves left
-    moves_text = small_font.render('Moves Left: ' + str(moves), True, (255, 0, 255))
+    moves_text = small_font.render('Moves Left: ' + str(moves), True, PINK)
     moves_rect = moves_text.get_rect()
     moves_rect.center = (WW // 2, 50)
     screen.blit(moves_text, moves_rect.topleft)
@@ -105,7 +111,7 @@ while running:
     # Checking collision b/w player and the victory flag
     if player.rect.colliderect(flag.rect):
         print('You win!')
-        change_level(level2)
+        next_level(current_level)
 
     # Updating
     space.step(1 / FPS)  # idk why is the value is 2/FPS

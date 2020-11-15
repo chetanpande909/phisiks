@@ -5,8 +5,8 @@ IDK if this is a gud way to do this but, it is the simplest :)
 from settings import WW, WH
 
 '''
-levelx[0] --> start position of a static line
-levelx[1] --> end position of a static line
+levelx[0] --> start position of a wall
+levelx[1] --> end position of a wall
 levelx[2] --> victory flag position
 levelx[3] --> start position of the player
 '''
@@ -39,4 +39,24 @@ level2 = [
     [
         (WW-100, WH-100)
     ]
+]
+
+level3 = [
+    [
+        (0, WH), (0, 0), (0, 0), (WW, 0), (0, WH//4)
+    ], 
+    [
+        (WW, WH), (WW, 0), (0, WH), (WW, WH), (WW//2+100, WH//2)
+    ], 
+    [
+        (WW//2+100, WH//2-16)
+    ], 
+    [
+        (WW-100, WH-100)
+    ]
+]
+
+## Keep this in the bottom and update it after adding a level
+levels = [
+    level1, level2, level3
 ]
