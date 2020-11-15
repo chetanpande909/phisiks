@@ -59,7 +59,8 @@ running = True
 clicked = False
 # Main Loop
 
-welcome(screen)
+if welcome(screen)=='quit':
+    running=False
 while running:
     screen.fill((255, 255, 255))
     for e in pygame.event.get():
