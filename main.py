@@ -23,9 +23,9 @@ clock = pygame.time.Clock()
 current_level = level1
 
 # Player
-p_radius = 16
+p_img = pygame.image.load('imgs/ball.png')
 max_speed = 100
-player = DynamicBall(current_level[3], 0, 0, p_radius, space)
+player = DynamicBall(current_level[3], 0, 0, p_img, space)
 
 # boxy = StaticBox(100, WH-100, WW, 25, 0, space)
 lines = []
@@ -50,7 +50,7 @@ def next_level(curr_level):
         current_level = levels[0]  ## this can b changed in the future to make a victory page that u have completed all levels !
 
     flag = VictoryFlag(current_level[2])
-    player = DynamicBall(current_level[3], 0, 0, p_radius, space)
+    player = DynamicBall(current_level[3], 0, 0, p_img, space)
 
     for rl in lines:
         space.remove(rl.body, rl.shape)  # Extremely Necessary
@@ -96,7 +96,7 @@ while running:
     disty = my - player.body.position.y
     pygame.draw.aaline(screen, GREEN, player.body.position, (mx, my), 10)
 
-    player.draw(screen, GREEN)  # Drawing the player
+    player.draw(screen)  # Drawing the player
     flag.draw(screen)  # Drawing the victory flag
 
     # Drawing the walls/lines whatever u call it -_-

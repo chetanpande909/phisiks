@@ -3,31 +3,35 @@ import pymunk, pygame
 
 # Dynamic means it will move 
 class DynamicBall:
-    def __init__(self, pos, vx, vy, r, space):
+    def __init__(self, pos, vx, vy, img_of_32px, space):
+        ## Image
+        self.image = img_of_32px
         ## Body
         self.body = pymunk.Body(body_type=pymunk.Body.DYNAMIC)## name suggests everything -_-
         self.body.position = pos[0]                  ## name suggests everything -_-
         self.body.velocity = vx, vy                 ## name suggests everything -_-
         ## Shape
-        self.shape = pymunk.Circle(self.body, r)    ## this is the collision shape
+        self.shape = pymunk.Circle(self.body, 16)    ## this is the collision shape
         self.shape.density = 1                      ## if set to 0, body will behave wierdly
         self.shape.elasticity = 0.50                ## name suggests everything -_-
         ## Adding to the space
         space.add(self.body, self.shape)
         self.shape.collision_type = 1               ## idk wht this does, but if i comment it, the ball doesn't move
         ## This will b used for collsions for pygame
+        self.rect = self.image.get_rect()
         self.rect = pygame.Rect(
             self.body.position.x, 
             self.body.position.y, 
-            self.shape.radius, 
-            self.shape.radius
+            self.shape.radius * 2, 
+            self.shape.radius * 2
         )
 
-    def draw(self, surf, color):
+    def draw(self, surf):
         ## Pygame comes into action ;)
         x, y = self.body.position
-        self.rect.topleft = (x, y)      ## To update the rect's position
-        pygame.draw.circle(surf, color, (int(x), int(y)), int(self.shape.radius))
+        self.rect.center = self.shape.body.position
+        rot_img = self.image.
+        surf.blit(self.image, self.rect.topleft)
         '''
         x, y and radius are floats and thus need to b changed to integer,
         cuz pygame doesn't supports floats as position and radius to draw
