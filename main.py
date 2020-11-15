@@ -80,6 +80,9 @@ while running:
             running = False
         if e.type == pygame.MOUSEBUTTONDOWN:
             clicked = True
+        if e.type == pygame.KEYDOWN:
+            if moves == 0 and e.key == pygame.K_r:
+                next_level(levels[levels.index(current_level)-1])       # LOGIC OP xD
 
     # Drawing the direction in which a force will b applied
     # it's just for a reference, but it looks cool so ;)
