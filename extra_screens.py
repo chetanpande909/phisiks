@@ -1,9 +1,6 @@
 import pygame, time
-from settings import tiny_font, small_font, medium_font, big_font, WW, WH, skins
+from settings import *
 import leaderboard as lb
-
-
-# Player Skins
 
 def welcome_screen(screen):
     while True:
@@ -47,6 +44,7 @@ def welcome_screen(screen):
                     if temp_data == 'quit':
                         return False
                     break
+
                 # Ball Skin Screen
                 if event.key == pygame.K_m:
                     temp_data = ball_skin_screen(screen)
@@ -106,7 +104,7 @@ def leaderboard_screen(screen):
 
 
 # noinspection DuplicatedCode
-# pycharm setting msg above -_-
+# pycharm setting msg above -_-     > LMAO xD
 def score_screen(screen, score):
     while True:
         screen.fill((255, 255, 255))
@@ -137,6 +135,16 @@ def score_screen(screen, score):
 
 
 def ball_skin_screen(screen):
+    cursor_rect = pygame.Rect(0, 0, 10, 10)
+    clicked = False
+
+    # phew... simple solution to a complex problem 
+    click_offset = 20           ## this is the gap b/w the focus and the ball image
+    click_focus = pygame.Rect(0, 0, 0, 0)
+
+    # default selected skin
+    selected_skin = skins[0]
+
     while True:
         # Drawing
         screen.fill((255, 255, 255))
@@ -151,9 +159,33 @@ def ball_skin_screen(screen):
         heading_rect.topleft = (0, WH - heading_rect.height)
         screen.blit(heading_text, heading_rect.topleft)
 
-        for skin, x in zip(skins, range(16, WW, WW // len(skins))):
-            scaled_skin = pygame.transform.scale2x(skin)
-            screen.blit(scaled_skin, (x, WH // 2))
+        ## too lazy to compare the x and y of each skin and mouse so, 
+        ## shorter method > use rect collisions ;)
+        mx, my = pygame.mouse.get_pos()
+        cursor_rect.center = (mx, my)
+
+        ## looping thru all skins and it's x coord
+        for skin, x in zip(skins, range(48, WW, WW // len(skins))):
+            ## maybe in future, will add another list of bigger imgs cuz these imgs are too low res
+            scaled_skin = pygame.transform.scale2x(skin).convert_alpha()
+            skin_rect = scaled_skin.get_rect(center = (x, WH//2))
+            screen.blit(scaled_skin, skin_rect.topleft)     ## Drawing all skins
+
+            ## too much :brain: was req to make this whole thing work 
+            ## phew..... at last ;)
+            click_focus.width = skin_rect.width + click_offset
+            click_focus.height = skin_rect.height + click_offset
+
+            ## Select skin
+            if selected_skin == skin:
+                click_focus.center = (x, WH//2)         ## focusing on the skin
+
+            pygame.draw.ellipse(screen, PINK, click_focus, click_offset//2)     ## drawing the focus circle
+            if cursor_rect.colliderect(skin_rect):      ## colliderect OP!
+                ## Clicking
+                if clicked:
+                    selected_skin = skin                ## changing the skin
+            
 
         pygame.display.update()
 
@@ -163,7 +195,11 @@ def ball_skin_screen(screen):
                 return 'quit'
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return 'start'
+                    return 'start'          ## Maybe, we can return the value of selected_skin instead of 'start'
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                clicked = True
+            else:
+                clicked = False
 
 
 def instructions_screen(screen):
