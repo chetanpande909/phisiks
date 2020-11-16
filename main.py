@@ -23,7 +23,7 @@ clock = pygame.time.Clock()
 current_level = level1
 
 # Player
-p_img = pygame.image.load('imgs/EggBlue.jpg')
+p_img = skins[0]
 max_speed = 100
 player = DynamicBall(current_level[3], 0, 0, p_img, space)
 
