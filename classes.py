@@ -1,5 +1,7 @@
 # Imports
-import pymunk, pygame
+import pymunk, pygame, math
+
+GLOBAL_FRICTION = 0.5
 
 # Dynamic means it will move 
 class DynamicBall:
@@ -14,6 +16,7 @@ class DynamicBall:
         self.shape = pymunk.Circle(self.body, 16)    ## this is the collision shape
         self.shape.density = 1                      ## if set to 0, body will behave wierdly
         self.shape.elasticity = 0.50                ## name suggests everything -_-
+        self.shape.friction = GLOBAL_FRICTION
         ## Adding to the space
         space.add(self.body, self.shape)
         self.shape.collision_type = 1               ## idk wht this does, but if i comment it, the ball doesn't move
@@ -30,12 +33,13 @@ class DynamicBall:
         ## Pygame comes into action ;)
         x, y = self.body.position
         self.rect.center = self.shape.body.position
-        rot_img = self.image.
-        surf.blit(self.image, self.rect.topleft)
-        '''
-        x, y and radius are floats and thus need to b changed to integer,
-        cuz pygame doesn't supports floats as position and radius to draw
-        '''
+
+        rotated_image = pygame.transform.rotate(self.image, -math.degrees(self.body.angle))
+        new_rect = rotated_image.get_rect(center = self.image.get_rect(topleft = self.rect.topleft).center)
+
+        surf.blit(rotated_image, new_rect.topleft)
+
+
 # Converse of Dynamic -_-
 class StaticBox:
     def __init__(self, x, y, w, h, r, space):
@@ -66,6 +70,7 @@ class StaticLine:
         ## Shape
         self.shape = pymunk.Segment(self.body, start_point, end_point, w)     ## this is the collision shape
         self.shape.elasticity = 1                   ## name suggests everything -_-
+        self.shape.friction = GLOBAL_FRICTION
         ## Adding to the space
         space.add(self.body, self.shape)
         self.shape.collision_type = 1               ## idk wht this does
@@ -77,7 +82,7 @@ class StaticLine:
 # Victory Flag
 class VictoryFlag:
     def __init__(self, pos):           # U have to put bottom point of the flag while making an instance
-        self.image = pygame.image.load('victory_flag.png')
+        self.image = pygame.image.load('imgs/victory_flag.png')
         self.rect = self.image.get_rect()
         self.rect.bottomleft = tuple(pos)
 
