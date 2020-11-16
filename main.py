@@ -47,10 +47,12 @@ def next_level(curr_level):
     try:
         current_level = levels[levels.index(curr_level) + 1]  ## increasing the level by 1
     except IndexError:  ## if list is out of levels
-        current_level = levels[
-            0]  ## this can b changed in the future to make a victory page that u have completed all levels !
+        current_level = levels[0]  ## this can b changed in the future to make a victory page that u have completed all levels !
 
     flag = VictoryFlag(current_level[2])
+
+    space.remove(player.body, player.shape)         ## i didn't removed the player from the space so collisions were happening xD
+    
     player = DynamicBall(current_level[3], 0, 0, p_img, space)
 
     for rl in lines:
@@ -156,8 +158,8 @@ while running:
         reset_level()
 
     # Updating
-    space.step(1 / FPS)  # idk why is the value is 2/FPS
+    space.step(1 / FPS)  # idk why is the value is 1/FPS
     pygame.display.update()
-    clock.tick(FPS * 2)
+    clock.tick(FPS)
 
 pygame.quit()
