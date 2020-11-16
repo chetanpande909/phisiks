@@ -6,7 +6,7 @@ GRAVITY = 250
 
 ################# Pygame initialization #################
 WW, WH = 1000, 600      ## Do not change now cuz the level coords are hard coded
-FPS = 120
+FPS = 60
 BGCOLOR = (255, 255, 255)
 pygame.init()
 tiny_font = pygame.font.Font('Roboto-Thin.ttf', 24)

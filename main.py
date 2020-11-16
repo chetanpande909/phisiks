@@ -160,6 +160,6 @@ while running:
     # Updating
     space.step(1 / FPS)  # idk why is the value is 1/FPS
     pygame.display.update()
-    clock.tick(FPS)
+    clock.tick(FPS*2)
 
 pygame.quit()
