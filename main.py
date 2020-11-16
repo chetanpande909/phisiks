@@ -47,7 +47,8 @@ def next_level(curr_level):
     try:
         current_level = levels[levels.index(curr_level) + 1]  ## increasing the level by 1
     except IndexError:  ## if list is out of levels
-        current_level = levels[0]  ## this can b changed in the future to make a victory page that u have completed all levels !
+        current_level = levels[
+            0]  ## this can b changed in the future to make a victory page that u have completed all levels !
 
     flag = VictoryFlag(current_level[2])
     player = DynamicBall(current_level[3], 0, 0, p_img, space)
@@ -62,10 +63,13 @@ def next_level(curr_level):
 
     moves = 5
 
+
 def reset_level():
-    global score
+    global score, st_time
     next_level(levels[-1])
     score = 0
+    st_time = 0
+
 
 clicked = False
 
@@ -75,9 +79,15 @@ running = welcome_screen(screen)
 score = 0
 st_time = 0  # Time
 
+level_number_to_display = 1
 while running:
     if st_time == 0:
         st_time = time.time()
+        for l in levels:
+            if current_level == l:
+                level_number_to_display = levels.index(l) + 1
+                break
+
     screen.fill(BGCOLOR)
     # Events
     for e in pygame.event.get():
@@ -117,20 +127,19 @@ while running:
         disty = max_speed
 
     # Displaying the number of moves left
-    moves_left_text = 'Moves Left: ' + str(moves)
-    if moves == 0:
-        moves_left_text += " Press R to reset"  # just adding some text
 
-    moves_text = small_font.render(moves_left_text, True, PINK)
+    moves_text = small_font.render('Moves Left: ' + str(moves), True, PINK)
     moves_rect = moves_text.get_rect()
     moves_rect.center = (WW // 2, 50)
     screen.blit(moves_text, moves_rect.topleft)
 
+    level_text = small_font.render(f"level: {level_number_to_display}", True, PINK)
+    screen.blit(level_text, (20, 20))
+
     # Checking collision b/w player and the victory flag
     if player.rect.colliderect(flag.rect):
-
         # Adding to Score and reset score Variables
-        score += int(float(100 * moves) / float(time.time() - st_time))
+        score += 100 + int(float(100 * moves) / float(time.time() - st_time))
         st_time = 0
 
         # Show score

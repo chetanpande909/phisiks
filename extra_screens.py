@@ -1,21 +1,9 @@
 import pygame, time
-from settings import small_font, medium_font, big_font, WW, WH
+from settings import tiny_font, small_font, medium_font, big_font, WW, WH, skins
 import leaderboard as lb
 
+
 # Player Skins
-skins = [
-    pygame.image.load('imgs/ball.jpg'), 
-    pygame.image.load('imgs/EggBlue.jpg'), 
-    pygame.image.load('imgs/EggGreen.jpg'), 
-    pygame.image.load('imgs/EggPurp.jpg'), 
-    pygame.image.load('imgs/EggRed.jpg'), 
-    pygame.image.load('imgs/EggYellow.jpg'), 
-    pygame.image.load('imgs/EnBallBlue.jpg'), 
-    pygame.image.load('imgs/EnBallGreen.jpg'), 
-    pygame.image.load('imgs/EnBallPurp.jpg'), 
-    pygame.image.load('imgs/EnBallRed.jpg'), 
-    pygame.image.load('imgs/EnBallYellow.jpg')
-]
 
 def welcome_screen(screen):
     while True:
@@ -27,23 +15,32 @@ def welcome_screen(screen):
 
         heading_text = small_font.render('Press a key to continue!', True, (255, 0, 255))
         heading_rect = heading_text.get_rect()
-        heading_rect.center = (WW // 2, 350)
+        heading_rect.center = (WW // 2, 250)
         screen.blit(heading_text, heading_rect.topleft)
 
-        heading_text = small_font.render('Press L to see the leaderboard!', True, (255, 0, 255))
+        heading_text = tiny_font.render('Press I to see the instructions!', True, (255, 0, 255))
         heading_rect = heading_text.get_rect()
-        heading_rect.center = (WW // 2, 450)
+        heading_rect.center = (WW // 2, 440)
+        # heading_rect[0]+=150
         screen.blit(heading_text, heading_rect.topleft)
 
-        heading_text = small_font.render('Press M to change ball skin!', True, (255, 0, 255))
+        heading_text = tiny_font.render('Press L to see the leaderboard!', True, (255, 0, 255))
         heading_rect = heading_text.get_rect()
-        heading_rect.center = (WW // 2, 550)
+        heading_rect.center = (WW // 2, 500)
+        # heading_rect[0]+=150
+        screen.blit(heading_text, heading_rect.topleft)
+
+        heading_text = tiny_font.render('Press M to change ball skin!', True, (255, 0, 255))
+        heading_rect = heading_text.get_rect()
+        heading_rect.center = (WW // 2, 560)
+        # heading_rect[0]+=150
         screen.blit(heading_text, heading_rect.topleft)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
             elif event.type == pygame.KEYDOWN:
+
                 # Leaderboard screen
                 if event.key == pygame.K_l:
                     temp_data = leaderboard_screen(screen)
@@ -56,7 +53,15 @@ def welcome_screen(screen):
                     if temp_data == 'quit':
                         return False
                     break
+
+                # Instructions Screen
+                elif event.key == pygame.K_i:
+                    temp_data = instructions_screen(screen)
+                    if not temp_data:
+                        return False
+                    break
                 return True
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 return True
 
@@ -130,8 +135,8 @@ def score_screen(screen, score):
 
         pygame.display.update()
 
-def ball_skin_screen(screen):
 
+def ball_skin_screen(screen):
     while True:
         # Drawing
         screen.fill((255, 255, 255))
@@ -143,12 +148,12 @@ def ball_skin_screen(screen):
 
         heading_text = small_font.render('Press ESCAPE to go back', True, (255, 0, 255))
         heading_rect = heading_text.get_rect()
-        heading_rect.topleft = (0, WH-heading_rect.height)
+        heading_rect.topleft = (0, WH - heading_rect.height)
         screen.blit(heading_text, heading_rect.topleft)
 
-        for skin, x in zip(skins, range(16, WW, WW//len(skins))):
+        for skin, x in zip(skins, range(16, WW, WW // len(skins))):
             scaled_skin = pygame.transform.scale2x(skin)
-            screen.blit(scaled_skin, (x, WH//2))
+            screen.blit(scaled_skin, (x, WH // 2))
 
         pygame.display.update()
 
@@ -159,3 +164,25 @@ def ball_skin_screen(screen):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return 'start'
+
+
+def instructions_screen(screen):
+    while True:
+        screen.fill((255, 255, 255))
+        text1 = big_font.render('Instructions', True, (255, 0, 255))
+        heading_rect = text1.get_rect()
+        heading_rect.center = (WW // 2, 50)
+        screen.blit(text1, heading_rect.topleft)
+
+        screen.blit(small_font.render('1. Click To Move', True, (255, 0, 255)), (50, 150))
+        screen.blit(small_font.render('2. write More Code', True, (255, 0, 255)), (50, 200))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                return True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                return True
+
+        pygame.display.update()
