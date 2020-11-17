@@ -2,7 +2,7 @@
 IDK if this is a gud way to do this but, it is the simplest :)
 '''
 
-from settings import WW, WH
+from settings import WW,WH
 
 '''
 levelx[0] --> start position of a wall
@@ -72,7 +72,27 @@ level4 = [
         (WW-100, WH-100)
     ]
 ]
+'''
+levelx[0] --> start position of a wall
+levelx[1] --> end position of a wall
+levelx[2] --> victory flag position
+levelx[3] --> start position of the player
+'''
+level5 = [
+    [
+        (0, WH), (0, 0), (0, 0), (WW, 0), (WW//2-200, WH//2),(4*WW//5, WH),(100//2-200, WH//2),(200,150)
+    ],
+    [
+        (WW, WH), (WW, 0), (0, WH), (WW, WH), (WW//2+200, WH//2),(4*WW//5, WH//2),(WW // 2, WH // 2),(500,300)
+    ],
+    [
+        (290,280)
+    ],
+    [
+        (WW-100, WH-100)
+    ]
+]
 ## Keep this in the bottom and update it after adding a level
 levels = [
-    level1, level2, level3, level4
+    level1, level2, level3, level4,level5
 ]
