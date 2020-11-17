@@ -5,6 +5,7 @@ import leaderboard as lb
 
 
 def welcome_screen(screen):
+    global to_return
     to_return = [True, skins[0]]
     while True:
         screen.fill((255, 255, 255))
@@ -53,10 +54,9 @@ def welcome_screen(screen):
                 # Ball Skin Screen
                 if event.key == pygame.K_m:
                     temp_data = ball_skin_screen(screen)
+                    to_return[1] = temp_data[1]
                     if temp_data[0] == 'quit':
                         to_return[0] = False
-                        print(id(to_return[1]))
-                        to_return[1] = temp_data[1]
                         return to_return
                     break
 
@@ -214,7 +214,6 @@ def ball_skin_screen(screen):
                 ## Clicking
                 if clicked:
                     selected_skin = skin  ## changing the skin
-        print(id(selected_skin))
 
         pygame.display.update()
         # Events

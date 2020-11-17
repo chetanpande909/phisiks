@@ -26,8 +26,6 @@ current_level = level1
 welcome_screen_data = welcome_screen(screen)
 running = welcome_screen_data[0]
 p_img = welcome_screen_data[1]
-print(id(p_img))
-
 max_speed = 100
 player = DynamicBall(current_level[3], 0, 0, p_img, space)
 

@@ -16,7 +16,6 @@ def receive():
     data = requests.get("http://cb-leaderboard.herokuapp.com/get", params={'game': 'physics'})
     req = data.json()
     to_return = []
-    print(len(req))
     if len(req) > 10:
         arg_2 = 11
     else:
