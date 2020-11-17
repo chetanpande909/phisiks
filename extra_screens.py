@@ -2,7 +2,10 @@ import pygame, time
 from settings import *
 import leaderboard as lb
 
+
+
 def welcome_screen(screen):
+    to_return = [True, skins[0]]
     while True:
         screen.fill((255, 255, 255))
         heading_text = big_font.render('Welcome to the Physics Game!', True, (255, 0, 255))
@@ -35,36 +38,62 @@ def welcome_screen(screen):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                to_return[0] = False
+                return to_return
             elif event.type == pygame.KEYDOWN:
 
                 # Leaderboard screen
                 if event.key == pygame.K_l:
                     temp_data = leaderboard_screen(screen)
                     if temp_data == 'quit':
-                        return False
+                        to_return[0] = False
+                        return to_return
                     break
 
                 # Ball Skin Screen
                 if event.key == pygame.K_m:
                     temp_data = ball_skin_screen(screen)
-                    if temp_data == 'quit':
-                        return False
+                    if temp_data[0] == 'quit':
+                        to_return[0] = False
+                        print(id(to_return[1]))
+                        to_return[1] = temp_data[1]
+                        return to_return
                     break
 
                 # Instructions Screen
                 elif event.key == pygame.K_i:
                     temp_data = instructions_screen(screen)
-                    if not temp_data:
-                        return False
+                    if temp_data == False:
+                        to_return[0] = False
+                        return to_return
                     break
-                return True
+                return to_return
 
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                return to_return
+
+        pygame.display.update()
+
+def instructions_screen(screen):
+    while True:
+        screen.fill((255, 255, 255))
+        text1 = big_font.render('Instructions', True, (255, 0, 255))
+        heading_rect = text1.get_rect()
+        heading_rect.center = (WW // 2, 50)
+        screen.blit(text1, heading_rect.topleft)
+
+        screen.blit(small_font.render('1. Click To Move', True, (255, 0, 255)), (50, 150))
+        screen.blit(small_font.render('2. write More Code', True, (255, 0, 255)), (50, 200))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            elif event.type == pygame.KEYDOWN:
+                return True
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 return True
 
         pygame.display.update()
-
 
 def leaderboard_screen(screen):
     screen.fill((255, 255, 255))
@@ -139,7 +168,7 @@ def ball_skin_screen(screen):
     clicked = False
 
     # phew... simple solution to a complex problem 
-    click_offset = 20           ## this is the gap b/w the focus and the ball image
+    click_offset = 20  ## this is the gap b/w the focus and the ball image
     click_focus = pygame.Rect(0, 0, 0, 0)
 
     # default selected skin
@@ -168,8 +197,8 @@ def ball_skin_screen(screen):
         for skin, x in zip(skins, range(48, WW, WW // len(skins))):
             ## maybe in future, will add another list of bigger imgs cuz these imgs are too low res
             scaled_skin = pygame.transform.scale2x(skin).convert_alpha()
-            skin_rect = scaled_skin.get_rect(center = (x, WH//2))
-            screen.blit(scaled_skin, skin_rect.topleft)     ## Drawing all skins
+            skin_rect = scaled_skin.get_rect(center=(x, WH // 2))
+            screen.blit(scaled_skin, skin_rect.topleft)  ## Drawing all skins
 
             ## too much :brain: was req to make this whole thing work 
             ## phew..... at last ;)
@@ -178,47 +207,26 @@ def ball_skin_screen(screen):
 
             ## Select skin
             if selected_skin == skin:
-                click_focus.center = (x, WH//2)         ## focusing on the skin
+                click_focus.center = (x, WH // 2)  ## focusing on the skin
 
-            pygame.draw.ellipse(screen, PINK, click_focus, click_offset//2)     ## drawing the focus circle
-            if cursor_rect.colliderect(skin_rect):      ## colliderect OP!
+            pygame.draw.ellipse(screen, PINK, click_focus, click_offset // 2)  ## drawing the focus circle
+            if cursor_rect.colliderect(skin_rect):  ## colliderect OP!
                 ## Clicking
                 if clicked:
-                    selected_skin = skin                ## changing the skin
-            
+                    selected_skin = skin  ## changing the skin
+        print(id(selected_skin))
 
         pygame.display.update()
-
         # Events
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return 'quit'
+                return ['quit', selected_skin]
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return 'start'          ## Maybe, we can return the value of selected_skin instead of 'start'
+                    return ['start', selected_skin]  ## Maybe, we can return the value of selected_skin instead of 'start'
             if event.type == pygame.MOUSEBUTTONDOWN:
                 clicked = True
             else:
                 clicked = False
 
 
-def instructions_screen(screen):
-    while True:
-        screen.fill((255, 255, 255))
-        text1 = big_font.render('Instructions', True, (255, 0, 255))
-        heading_rect = text1.get_rect()
-        heading_rect.center = (WW // 2, 50)
-        screen.blit(text1, heading_rect.topleft)
-
-        screen.blit(small_font.render('1. Click To Move', True, (255, 0, 255)), (50, 150))
-        screen.blit(small_font.render('2. write More Code', True, (255, 0, 255)), (50, 200))
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return False
-            elif event.type == pygame.KEYDOWN:
-                return True
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                return True
-
-        pygame.display.update()

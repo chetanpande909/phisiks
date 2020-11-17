@@ -22,8 +22,12 @@ clock = pygame.time.Clock()
 # Handling Levels
 current_level = level1
 
-# Player
-p_img = skins[0]
+# Player and showing Welcom screen
+welcome_screen_data = welcome_screen(screen)
+running = welcome_screen_data[0]
+p_img = welcome_screen_data[1]
+print(id(p_img))
+
 max_speed = 100
 player = DynamicBall(current_level[3], 0, 0, p_img, space)
 
@@ -74,8 +78,6 @@ def reset_level():
 
 
 clicked = False
-
-running = welcome_screen(screen)
 
 # noting Score
 score = 0
